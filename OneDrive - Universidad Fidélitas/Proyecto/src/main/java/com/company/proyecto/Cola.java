@@ -7,17 +7,17 @@ package com.company.proyecto;
 /**
  *
  * @author garayac
- * Pila (tipo LIFO) usando un arreglo dinámico.
- * Soporta: push, pop, peek, isEmpty, size, get(i), set(i).
- * Índice 0 = base | índice size-1 = cima.
+ * Estructura FIFO: el primero en entrar es el primero en salir.
  */
-public class Pila<T> {
+public class Cola<T> {
 
     private Object[] datos;
+    private int frente;
     private int size;
 
-    public Pila() {
+    public Cola() {
         datos = new Object[8];
+        frente = 0;
         size = 0;
     }
 
@@ -29,59 +29,55 @@ public class Pila<T> {
         return size;
     }
 
-    public void push(T valor) {
+    public void offer(T elemento) { // Encola
         if (size == datos.length) {
             aumentarCapacidad();
         }
-        datos[size] = valor;
+        int pos = (frente + size) % datos.length;
+        datos[pos] = elemento;
         size++;
     }
 
-    public T pop() {
+    public T poll() { // Desencola (retorna null si vacia)
         if (isEmpty()) {
-            System.out.println("Pila vacia, no se puede eliminar.");
+            System.out.println("Cola vacia, no se puede eliminar.");
             return null;
         }
+        @SuppressWarnings("unchecked")
+        T valor = (T) datos[frente];
+        datos[frente] = null;
+        frente = (frente + 1) % datos.length;
         size--;
-        @SuppressWarnings("unchecked")
-        T valor = (T) datos[size];
-        datos[size] = null;
         return valor;
     }
 
-    public T peek() {
+    public T peek() { // Ver primer elemento
         if (isEmpty()) {
-            System.out.println("Pila vacia.");
+            System.out.println("Cola vacia.");
             return null;
         }
         @SuppressWarnings("unchecked")
-        T valor = (T) datos[size - 1];
+        T valor = (T) datos[frente];
         return valor;
     }
 
-    public T get(int index) {
+    public T get(int index) { // Obtener elemento sin quitarlo
         if (index < 0 || index >= size) {
             System.out.println("Indice fuera de rango.");
             return null;
         }
+        int pos = (frente + index) % datos.length;
         @SuppressWarnings("unchecked")
-        T valor = (T) datos[index];
+        T valor = (T) datos[pos];
         return valor;
-    }
-
-    public void set(int index, T valor) {
-        if (index < 0 || index >= size) {
-            System.out.println("Indice fuera de rango, no se modifico nada.");
-            return;
-        }
-        datos[index] = valor;
     }
 
     private void aumentarCapacidad() {
         Object[] nuevo = new Object[datos.length * 2];
         for (int i = 0; i < size; i++) {
-            nuevo[i] = datos[i];
+            nuevo[i] = datos[(frente + i) % datos.length];
         }
         datos = nuevo;
+        frente = 0;
     }
 }

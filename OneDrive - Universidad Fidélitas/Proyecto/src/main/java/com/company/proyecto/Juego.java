@@ -8,16 +8,14 @@ package com.company.proyecto;
  *
  * @author garayac
  */
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
 
+
 public class Juego {
+//colas
+    private final Cola<Jugador> colaListos = new Cola<>();
 
-    // Cola de preparados/listos (si necesitan tambien hecha a mano, avisame y la cambio)
-    private final Queue<Jugador> colaListos = new LinkedList<>();
-
-    // NUEVO: nuestras propias pilas (sin java.util.Stack)
+    // Pilas 
     private final Pila<CartaAccion> pilaPremios = new Pila<>();
     private final Pila<CartaAccion> pilaCastigos = new Pila<>();
 
@@ -45,7 +43,6 @@ public class Juego {
         pilaCastigos.push(new CartaAccion(Operacion.RESTA, 5, "Resta cinco posiciones."));
     }
 
-    /** Menu: inscripcion y mantenimiento de pilas */
     public void ejecutarSoloInscripcionYPilas() {
         int opcion;
         do {
@@ -68,7 +65,7 @@ public class Juego {
         } while (opcion != 0);
     }
 
-    // ========== (1) Inscripcion ==========
+    // ======= (1) Inscripcion de jugadores =======
     private void inscribirJugadores() {
         int actuales = colaListos.size();
         int disponibles = MAX_JUGADORES - actuales;
@@ -87,7 +84,7 @@ public class Juego {
         System.out.println("Inscripcion completa. En cola: " + colaListos.size());
     }
 
-    // ========== (2) Mantenimiento de Pilas ==========
+    // ======= (2) Mantenimiento de Pilas =======
     private void mantenimientoPilas() {
         System.out.println("---- MANTENIMIENTO DE PILAS ----");
         System.out.println("1) Premios");
@@ -178,14 +175,16 @@ public class Juego {
         }
     }
 
-    // utilidad para revisar
+    // ======= Mostrar cola y pilas =======
     private void mostrarEstadoRapido() {
         System.out.println("-- Cola (frente -> final) --");
-        if (colaListos.isEmpty()) System.out.println("[Cola vacia]");
-        int i = 1;
-        for (Jugador j : colaListos) {
-            System.out.println(i + ") " + j.getNombre() + " (pos=" + j.getPosicion() + ")");
-            i++;
+        if (colaListos.isEmpty()) {
+            System.out.println("[Cola vacia]");
+        } else {
+            for (int i = 0; i < colaListos.size(); i++) {
+                Jugador j = colaListos.get(i);
+                System.out.println((i + 1) + ") " + j.getNombre() + " (pos=" + j.getPosicion() + ")");
+            }
         }
         System.out.println("\n-- Pila Premios --");  mostrarPila(pilaPremios);
         System.out.println("-- Pila Castigos --");  mostrarPila(pilaCastigos);
