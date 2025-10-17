@@ -19,7 +19,7 @@ public class UtilEntrada {
             try {
                 return Integer.parseInt(s);
             } catch (NumberFormatException e) {
-                System.out.println("Ingresa un número entero válido.");
+                System.out.println("Ingresa un numero entero valido.");
             }
         }
     }
@@ -29,7 +29,7 @@ public class UtilEntrada {
             System.out.print(prompt);
             String s = sc.nextLine().trim();
             if (!s.isEmpty()) return s;
-            System.out.println("No puede estar vacío.");
+            System.out.println("No puede estar vacio.");
         }
     }
 }
