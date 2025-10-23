@@ -189,4 +189,23 @@ public class Juego {
         System.out.println("\n-- Pila Premios --");  mostrarPila(pilaPremios);
         System.out.println("-- Pila Castigos --");  mostrarPila(pilaCastigos);
     }
+    
+    public void listarJugadoresYPosiciones() {
+        System.out.println("=== Jugadores y posiciones ===");
+
+        if (colaListos == null) {
+            System.out.println("Error: la cola de jugadores no ha sido inicializada.");
+            return;
+        }
+
+        if (colaListos.isEmpty()) {
+            System.out.println("No hay jugadores inscritos.");
+            return;
+        }
+
+        for (int i = 0; i < colaListos.size(); i++) {
+            Jugador j = colaListos.get(i);
+            System.out.println((i + 1) + ") " + j.getNombre() + " - posición: " + j.getPosicion());
+        }
+    }
 }
