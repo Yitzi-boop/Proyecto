@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class Juego {
 //colas
-    private final Cola<Jugador> colaListos = new Cola<>();
+    private Cola<Jugador> colaListos = new Cola<>();
 
     // Pilas 
     private final Pila<CartaAccion> pilaPremios = new Pila<>();
@@ -55,11 +55,20 @@ public class Juego {
             opcion = UtilEntrada.leerEntero(sc, "Elige una opcion: ");
 
             switch (opcion) {
-                case 1 -> inscribirJugadores();
-                case 2 -> mantenimientoPilas();
-                case 3 -> mostrarEstadoRapido();
-                case 0 -> System.out.println("Saliendo...");
-                default -> System.out.println("Opcion invalida.");
+                case 1:
+                    inscribirJugadores();
+                case 2:
+                    mantenimientoPilas();
+                case 3:
+                    mostrarEstadoRapido();
+                case 4:
+                    salirDelJuego();
+                case 5:    
+                    opcionAyuda();
+                case 0:
+                    System.out.println("Saliendo...");
+                default:
+                    System.out.println("Opcion invalida. Intente nuevamente");
             }
             System.out.println();
         } while (opcion != 0);
@@ -207,5 +216,53 @@ public class Juego {
             Jugador j = colaListos.get(i);
             System.out.println((i + 1) + ") " + j.getNombre() + " - posición: " + j.getPosicion());
         }
+    }
+    
+    public void salirDelJuego(){
+        if(colaListos.isEmpty()){
+            System.out.println("\nNo hay jugadores registados en la cola de listos.");
+            return;
+        }
+        System.out.println("\nSALIR DEL JUEGO");
+        System.out.println("Jugadores actualmente en el juego.");
+        for (int i = 0; i < colaListos.size(); i++) {
+            Jugador j = colaListos.get(i);
+            System.out.println((i + 1) + "." + j.getNombre());
+        }
+        String nombre = UtilEntrada.leerNoVacio(sc, version );
+        
+        Cola<Jugador> nuevaCola = new Cola<>();
+        boolean encontrado = false;
+        
+        //Se recorre la cola y copiamos todos menos el que va salir del juego
+        while (!colaListos.isEmpty()){ 
+            Jugador actual = colaListos.poll(); //Sacar el primero de la cola
+            if (actual.getNombre().equalsIgnoreCase(nombre)){
+                encontrado = true;
+                System.out.println("\nEl jugador " + actual.getNombre() + " ha salido del juego.");
+            }else {
+                nuevaCola.offer(actual);
+            }
+        }
+        //Actualizamos la cola original 
+        colaListos = nuevaCola;
+        if (!encontrado){
+            System.out.println("\nNo se encontró el jugador con el nombre que se ingresó.");
+        }
+    }
+    
+    public void opcionAyuda(){
+        String ayuda = "\n===========AYUDA=======\n"
+                + "Version del sistema: " + version + "\n"
+                + "Desarrollado por el equipo: \n" 
+                + "Gsbriel Araya Calderón\n"
+                + "Jimena Arrieta Hernández\n"
+                + "Anthony Montero Mora\n"
+                + "Yitzi Reyes Guzmán.";
+        System.out.println(ayuda);
+        
+                
+                        
+                
     }
 }
